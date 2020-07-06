@@ -1,0 +1,30 @@
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("names",Context.MODE_PRIVATE);
+                 //sharedPreferences.edit().putString(friends);
+                 //sharedPreferences.edit().putString("username","zaid").apply();
+                 //String username=sharedPreferences.getString("username","");
+                 //Log.i("This is the username",username);
+        ArrayList<String> friends = new ArrayList<>();
+        friends.add("zaid");
+        friends.add("saif");
+        friends.add("amena");
+        try {
+            sharedPreferences.edit().putString("friends", ObjectSerializer.serialize(friends)).apply();
+            Log.i("friends", ObjectSerializer.serialize(friends));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ArrayList<String> newFriends = new ArrayList<>();
+        try {
+            newFriends = (ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("friends", ObjectSerializer.serialize(new ArrayList<String>())));
+        } catch (Exception z) {
+            z.printStackTrace();
+        }
+        Log.i("new friends", newFriends.toString());
+    }
+}
